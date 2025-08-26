@@ -67,10 +67,21 @@ const PasswordManager = () => {
     
     if (!passwordObj[0]) {
       setPasswordObj([data])
+
+      const storedPasswords = JSON.parse(localStorage.getItem("passwords"));
+      // console.log(storedPasswords)
+      storedPasswords.push(data);
+      localStorage.setItem("passwords", JSON.stringify(storedPasswords));
     }
 
     else {
       setPasswordObj([...passwordObj, data]);
+      // console.log(data)
+
+      const storedPasswords = JSON.parse(localStorage.getItem("passwords"));
+      // console.log(storedPasswords)
+      storedPasswords.push(data);
+      localStorage.setItem("passwords", JSON.stringify(storedPasswords));
     }
     // setPasswordObj([...passwordObj, data]);
     // console.log(passwordObj)
@@ -94,13 +105,13 @@ const PasswordManager = () => {
           </div>
 
           <form className='inputs flex flex-col gap-5' onSubmit={handleSubmit(onSubmit)}>
-            <input {...register('websiteURL', {required : true})} type="text" value={websiteURL} onChange={handleWebsiteURLInput} placeholder='Enter Website URL' className='placeholder:text-gray-600 w-[100%] border-2 border-[#67C090] rounded-[20px] p-1 outline-none px-3' />
+            <input {...register('websiteURL', {required : true})} type="text" value={websiteURL} onChange={handleWebsiteURLInput} placeholder='Enter Website URL' className='placeholder:text-gray-600 w-[100%] border-2 border-[#67C090] rounded-[20px] p-1 outline-none px-3 max-[500px]:text-[13px]' />
 
-            <div className='flex gap-3'>
-              <input {...register('username', {required : true})} type="text" value={username} onChange={handleUsernameInput}  placeholder='Enter Username' className='placeholder:text-gray-600 w-[80%] border-2 border-[#67C090] rounded-[20px] p-1 outline-none  px-3' />
+            <div className='flex gap-3 max-[500px]:gap-1'>
+              <input {...register('username', {required : true})} type="text" value={username} onChange={handleUsernameInput}  placeholder='Enter Username' className='placeholder:text-gray-600 w-[80%] border-2 border-[#67C090] rounded-[20px] p-1 outline-none  px-3 max-[500px]:text-[13px]' />
 
               <div className=' border-2 border-[#67C090] rounded-[20px] p-1 flex justify-between px-3'>
-                <input {...register('password', {required : true})} type={showPassword ? 'text ' : 'password'} value={password} onChange={handlePasswordInput}  placeholder='Enter Password' className=' placeholder:text-gray-600 outline-none w-[80%] px-2'/>
+                <input {...register('password', {required : true})} type={showPassword ? 'text ' : 'password'} value={password} onChange={handlePasswordInput}  placeholder='Enter Password' className=' placeholder:text-gray-600 outline-none w-[80%] px-2 max-[500px]:px-0.5 max-[500px]:text-[13px]'/>
 
                 <div onClick={toggleShowPassword} className='cursor-pointer'>
                   {showPassword ? <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
