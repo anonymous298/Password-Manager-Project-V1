@@ -5,7 +5,21 @@ import { toast } from 'react-toastify'
 
 const PasswordRendering = ({setWebsiteURL, setUsername, setPassword}) => {
     const {passwordObj, setPasswordObj} = useContext(contextState);
+
+    const [copied, setCopied] = useState(false);
     // console.log(passwordObj)
+
+    const copyToClipboard = async (val, keyName) => {
+        try {
+            await navigator.clipboard.writeText(val);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000); // reset after 2 sec
+            // toast.success('Copied to clipboard...')
+            toast.success(`${keyName} Copied to clipboard...`)
+        } catch (err) {
+            console.error("Failed to copy: ", err);
+        }
+    };
 
     const deletePassword = (idx) => {  
         toast.error(`Password Deleted Successfully`);        
@@ -23,6 +37,8 @@ const PasswordRendering = ({setWebsiteURL, setUsername, setPassword}) => {
 
         setPasswordObj(passwordObj.filter((_, index) => index !== idx));
     }
+
+
 
   return (
     <div className='flex flex-col gap-2'>
@@ -46,11 +62,47 @@ const PasswordRendering = ({setWebsiteURL, setUsername, setPassword}) => {
                     <tbody>
                         {passwordObj.map((val, idx) => {
                             // console.log(idx)
+                            // encryptPassword()
+                            // let encrVal = encryptPassword(val.password);
+
                             return (
                                 <tr className='bg-green-200 text-center'>
-                                    <td className='p-2'>{val.websiteURL}</td>
-                                    <td className='p-2'>{val.username}</td>
-                                    <td className='p-2'>{val.password}</td>
+                                    <td className='p-2 '>
+                                        <div className='flex justify-center items-center gap-x-2 cursor-pointer'>
+
+                                            {val.websiteURL} 
+                                            <button onClick={() => copyToClipboard(val.websiteURL, "WebsiteURL")}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5 hover:fill-gray-500 transition-all cursor-pointer">
+                                                    <path fillRule="evenodd" d="M10.5 3A1.501 1.501 0 0 0 9 4.5h6A1.5 1.5 0 0 0 13.5 3h-3Zm-2.693.178A3 3 0 0 1 10.5 1.5h3a3 3 0 0 1 2.694 1.678c.497.042.992.092 1.486.15 1.497.173 2.57 1.46 2.57 2.929V19.5a3 3 0 0 1-3 3H6.75a3 3 0 0 1-3-3V6.257c0-1.47 1.073-2.756 2.57-2.93.493-.057.989-.107 1.487-.15Z" clipRule="evenodd" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+
+                                    <td className='p-2 '>
+                                        <div className='flex justify-center items-center gap-x-2 cursor-pointer'>
+
+                                            {val.username}
+                                            <button onClick={() => copyToClipboard(val.username, "Username")}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5 hover:fill-gray-500 transition-all cursor-pointer">
+                                                    <path fillRule="evenodd" d="M10.5 3A1.501 1.501 0 0 0 9 4.5h6A1.5 1.5 0 0 0 13.5 3h-3Zm-2.693.178A3 3 0 0 1 10.5 1.5h3a3 3 0 0 1 2.694 1.678c.497.042.992.092 1.486.15 1.497.173 2.57 1.46 2.57 2.929V19.5a3 3 0 0 1-3 3H6.75a3 3 0 0 1-3-3V6.257c0-1.47 1.073-2.756 2.57-2.93.493-.057.989-.107 1.487-.15Z" clipRule="evenodd" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+
+                                    <td className='p-2 '>
+                                        <div className='flex justify-center items-center gap-x-2 cursor-pointer'>
+
+                                            {val.encryptedPassword}
+                                            <button onClick={() => copyToClipboard(val.password, "Password")}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5 hover:fill-gray-500 transition-all cursor-pointer">
+                                                    <path fillRule="evenodd" d="M10.5 3A1.501 1.501 0 0 0 9 4.5h6A1.5 1.5 0 0 0 13.5 3h-3Zm-2.693.178A3 3 0 0 1 10.5 1.5h3a3 3 0 0 1 2.694 1.678c.497.042.992.092 1.486.15 1.497.173 2.57 1.46 2.57 2.929V19.5a3 3 0 0 1-3 3H6.75a3 3 0 0 1-3-3V6.257c0-1.47 1.073-2.756 2.57-2.93.493-.057.989-.107 1.487-.15Z" clipRule="evenodd" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+
                                     <td className='p-2 flex gap-3 justify-center items-center'>
                                         <button className='cursor-pointer' onClick={() => updatePassword(val, idx)}>
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6 hover:fill-yellow-500">
