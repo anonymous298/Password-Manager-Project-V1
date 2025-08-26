@@ -4,7 +4,7 @@ import PasswordRendering from './PasswordRendering';
 import { useContext } from 'react';
 import { contextState } from '../context/context';
 import { useForm } from "react-hook-form"
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const PasswordManager = () => {
@@ -12,12 +12,31 @@ const PasswordManager = () => {
 
   const {passwordObj, setPasswordObj} = useContext(contextState);
 
+  const [websiteURL, setWebsiteURL] = useState('')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors, isSubmitting },
   } = useForm()
+
+  const handleWebsiteURLInput = (e) => {
+    setWebsiteURL(e.target.value)
+    // console.log(inputValues)
+  }
+
+  const handleUsernameInput = (e) => {
+    setUsername(e.target.value)
+    // console.log(e.target.value)
+  }
+
+  const handlePasswordInput = (e) => {
+    setPassword(e.target.value)
+    // console.log(e.target.value)
+  }
 
   const toggleShowPassword = () => {
     if (showPassword) {
@@ -29,12 +48,28 @@ const PasswordManager = () => {
     }
   }
 
-  const onSubmit = (data) => {
-    setPasswordObj([...passwordObj, data]);
-    console.log(passwordObj)
+  const notifySuccess = () => toast.success("Successfully Added Password...");
 
+  const onSubmit = (data) => {
+    
+    if (!passwordObj[0]) {
+      setPasswordObj([data])
+    }
+
+    else {
+      setPasswordObj([...passwordObj, data]);
+    }
+    // setPasswordObj([...passwordObj, data]);
+    // console.log(passwordObj)
+
+    notifySuccess();
+
+    setWebsiteURL('');
+    setUsername('');
+    setPassword('');
 
   }
+
  
   return (
     <div className=' flex flex-col items-center justify-center'>
@@ -46,13 +81,13 @@ const PasswordManager = () => {
           </div>
 
           <form className='inputs flex flex-col gap-5' onSubmit={handleSubmit(onSubmit)}>
-            <input {...register('websiteURL', {required : true})} type="text" placeholder='Enter Website URL' className='placeholder:text-gray-600 w-[100%] border-2 border-[#67C090] rounded-[20px] p-1 outline-none px-3' />
+            <input {...register('websiteURL', {required : true})} type="text" value={websiteURL} onChange={handleWebsiteURLInput} placeholder='Enter Website URL' className='placeholder:text-gray-600 w-[100%] border-2 border-[#67C090] rounded-[20px] p-1 outline-none px-3' />
 
             <div className='flex gap-3'>
-              <input {...register('username', {required : true})} type="text" placeholder='Enter Username' className='placeholder:text-gray-600 w-[80%] border-2 border-[#67C090] rounded-[20px] p-1 outline-none  px-3' />
+              <input {...register('username', {required : true})} type="text" value={username} onChange={handleUsernameInput}  placeholder='Enter Username' className='placeholder:text-gray-600 w-[80%] border-2 border-[#67C090] rounded-[20px] p-1 outline-none  px-3' />
 
               <div className=' border-2 border-[#67C090] rounded-[20px] p-1 flex justify-between px-3'>
-                <input {...register('password', {required : true})} type={showPassword ? 'text ' : 'password'} placeholder='Enter Password' className=' placeholder:text-gray-600 outline-none w-[80%] px-2'/>
+                <input {...register('password', {required : true})} type={showPassword ? 'text ' : 'password'} value={password} onChange={handlePasswordInput}  placeholder='Enter Password' className=' placeholder:text-gray-600 outline-none w-[80%] px-2'/>
 
                 <div onClick={toggleShowPassword} className='cursor-pointer'>
                   {showPassword ? <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
@@ -69,7 +104,7 @@ const PasswordManager = () => {
               </div>
             </div>
 
-            <button className='text-white flex mx-auto bg-green-500 p-2 rounded-[20px] px-5 gap-1 cursor-pointer hover:bg-[#67C090] font-semibold transition-all'>
+            <button className='text-white flex mx-auto bg-green-500 p-2 rounded-[20px] px-5 gap-1 cursor-pointer hover:bg-[#67C090] font-semibold transition-all' disabled={isSubmitting}>
               Save
 
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
@@ -81,7 +116,7 @@ const PasswordManager = () => {
 
         </div>
 
-        <PasswordRendering />
+        <PasswordRendering setWebsiteURL={setWebsiteURL}  setUsername={setUsername}  setPassword={setPassword}/>
 
       </div>
     </div>
