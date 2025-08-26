@@ -10,19 +10,31 @@ function App() {
   const [passwordObj, setPasswordObj] = useState([])
   
   return (
-    <div className='h-[100vh] flex flex-col justify-between'>
-      <contextState.Provider value={{passwordObj, setPasswordObj}}>
+    <>
+      <div className='h-[100vh] flex flex-col justify-between'>
+        <contextState.Provider value={{passwordObj, setPasswordObj}}>
 
-        <Navbar />
+          <Navbar />
 
-        <PasswordManager />
+          <PasswordManager />
 
-        <Footer />
+          <Footer />
 
-        <ToastContainer />
 
-      </contextState.Provider>
-    </div>
+        </contextState.Provider>
+      </div>
+
+      <ToastContainer
+        position="bottom-right"  // top-left, bottom-right, bottom-center etc.
+        autoClose={1000}      // 3 seconds
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"       // "light" | "dark" | "colored"
+      />
+    </>
   )
 }
 
