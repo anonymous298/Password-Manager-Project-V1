@@ -50,7 +50,20 @@ const PasswordManager = () => {
 
   const notifySuccess = () => toast.success("Successfully Added Password...");
 
+  const encryptPassword = (password) => {
+    let encryptedValues = '';
+
+    for (const val of password) {
+        encryptedValues += '*';
+    }
+
+    return encryptedValues;
+  }
+
   const onSubmit = (data) => {
+
+    data['encryptedPassword'] = encryptPassword(data.password);
+    // console.log(data);
     
     if (!passwordObj[0]) {
       setPasswordObj([data])
