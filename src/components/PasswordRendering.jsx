@@ -23,9 +23,12 @@ const PasswordRendering = ({setWebsiteURL, setUsername, setPassword}) => {
 
     const deletePassword = (idx) => {  
         toast.error(`Password Deleted Successfully`);        
-        setPasswordObj(passwordObj.filter((_, index) => index !== idx));
+        let filteredArray = passwordObj.filter((_, index) => index !== idx)
+        setPasswordObj(filteredArray);
         // console.log(passwordObj.filter((_, index) => idx !== index))
         // console.log(idx)
+        localStorage.clear();
+        localStorage.setItem("passwords", JSON.stringify(filteredArray));
     }
 
     const updatePassword = (val, idx) => {
@@ -35,7 +38,11 @@ const PasswordRendering = ({setWebsiteURL, setUsername, setPassword}) => {
 
         toast.info("Password Updating...")
 
-        setPasswordObj(passwordObj.filter((_, index) => index !== idx));
+        let filteredArray = passwordObj.filter((_, index) => index !== idx);
+        setPasswordObj(filteredArray);
+
+        localStorage.clear();
+        localStorage.setItem("passwords", JSON.stringify(filteredArray));
     }
 
 
